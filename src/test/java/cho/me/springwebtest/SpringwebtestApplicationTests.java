@@ -1,5 +1,6 @@
 package cho.me.springwebtest;
 
+import cho.me.springwebtest.service.IndexService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -50,16 +53,22 @@ public class SpringwebtestApplicationTests {
 	@Autowired
 	TestConfig testConfig;
 
+	@MockBean
+	IndexService indexService;
+
+
 	@Test
 	public void contextLoads() throws Exception{
-		String body = testRestTemplate.getForObject("/",String.class);
-		assertThat(body).isEqualTo("Hello World");
 
+
+		given(indexService.getIndex()).willReturn("Mock");
 		this.webTestClient.get().uri("/").exchange().expectStatus().isOk()
 				.expectBody(String.class).isEqualTo("Hello World");
 
-
-
+		/*
+		String body = testRestTemplate.getForObject("/",String.class);
+		assertThat(body).isEqualTo("Hello World");
+*/
 	}
 
 }
