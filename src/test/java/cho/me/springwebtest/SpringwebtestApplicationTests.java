@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
@@ -54,16 +55,18 @@ public class SpringwebtestApplicationTests {
 	TestConfig testConfig;
 
 	@MockBean
-	IndexService indexService;
+	IndexService mIndexService;
 
+	@SpyBean
+	IndexService sIndexService;
 
 	@Test
 	public void contextLoads() throws Exception{
 
-
-		given(indexService.getIndex()).willReturn("Mock");
+		System.out.println(sIndexService.getIndex());
+		given(mIndexService.getIndex()).willReturn("Mock");
 		this.webTestClient.get().uri("/").exchange().expectStatus().isOk()
-				.expectBody(String.class).isEqualTo("Hello World");
+				.expectBody(String.class).isEqualTo("Mock");
 
 		/*
 		String body = testRestTemplate.getForObject("/",String.class);
