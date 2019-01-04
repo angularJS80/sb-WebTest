@@ -6,7 +6,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -22,12 +26,21 @@ public class RestDocTest {
     private MockMvc mvc;
 
     @Test
-    public void listUsers() throws Exception {
+    public void testListUsers() throws Exception {
         this.mvc.perform(get("/").accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andDo(document("index"));
+                .andExpect(status().isOk());
+                //.andDo(document("index"));
     }
 
+    @TestConfiguration
+    static class ResultHandlerConfiguration {
+
+        @Bean
+        public RestDocumentationResultHandler restDocumentation() {
+            return MockMvcRestDocumentation.document("{method-name}");
+        }
+
+    }
 
 
 }
