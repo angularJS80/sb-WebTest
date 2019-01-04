@@ -1,8 +1,7 @@
 package cho.me.springwebtest;
 
-import cho.me.springwebtest.service.IndexService;
+import cho.me.springwebtest.service.RestTemplateClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class IndexController {
     @Autowired
-    IndexService indexService;
+    RestTemplateClientService restTemplateClientService;
 
     @GetMapping("/")
     public String getIndex() {
-        return indexService.getIndex();
+        return restTemplateClientService.getOtherServerCall();
         //return "Hello World";
     }
 }
